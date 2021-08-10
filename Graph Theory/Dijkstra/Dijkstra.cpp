@@ -52,7 +52,7 @@ void Dijkstra(int source, int destination)
 		cout << it << " ";
 }
 
--------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
 
 Dijkstra Using Set:
 
@@ -61,7 +61,7 @@ int dist[N], p[N];
 
 void Dijkstra(int source, int destination)
 {
-	for(int i = 0; i < N; i++){
+	for (int i = 0; i < N; i++) {
 		dist[i] = INF;
 		p[i] = -1;
 	}
@@ -70,22 +70,22 @@ void Dijkstra(int source, int destination)
 	s.insert({0, source});
 	dist[source] = 0;
 
-	while (!s.empty()) { 
+	while (!s.empty()) {
 		int x = s.begin()->second;
 		s.erase(s.begin());
 
-		for (auto it : adj[x]) { 
+		for (auto it : adj[x]) {
 			int node = it.first, wt = it.second;
 
 			if (dist[x] + wt < dist[node]) {
 				s.erase({dist[node], node});
 				dist[node] = dist[x] + wt;
 				p[node] = x;
-				s.insert({dist[node], node}); 
+				s.insert({dist[node], node});
 			}
 		}
 	}
-	
+
 	if (dist[destination] == INF) {
 		cout << "No Path" << '\n';
 		return;
@@ -97,7 +97,7 @@ void Dijkstra(int source, int destination)
 	}
 	path.pb(source);
 	reverse(all(path));
-	
+
 	for (auto x : path) {
 		cout << x << " ";
 	}
