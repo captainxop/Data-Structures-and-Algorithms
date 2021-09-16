@@ -2,7 +2,7 @@ const int MaxN = 1e5 + 10;
 int n, m;
 
 struct Edge {
-	int u, v, wt;
+	int u, v, w;
 };
 
 Edge edges[MaxN], MST[MaxN];
@@ -38,14 +38,14 @@ void merge(int a, int b)
 	}
 }
 
-void addEdge(Edge &e, int u, int v, int wt)
+void addEdge(Edge &e, int u, int v, int w)
 {
-	e.u = u, e.v = v, e.wt = wt;
+	e.u = u, e.v = v, e.w = w;
 }
 
 bool comp(Edge &e1, Edge &e2)
 {
-	return e1.wt < e2.wt;
+	return e1.w < e2.w;
 }
 
 int krsukalMST(int m)
@@ -55,13 +55,13 @@ int krsukalMST(int m)
 	sort(edges, edges + m, comp);
 
 	for (int i = 0; i < m; i++) {
-		int u = edges[i].u, v = edges[i].v, wt = edges[i].wt;
+		int u = edges[i].u, v = edges[i].v, w = edges[i].w;
 		u = find_set(u);
 		v = find_set(v);
 
 		if (u != v) {
-			cost += wt;
-			addEdge(MST[count], u, v, wt);
+			cost += w;
+			addEdge(MST[count], u, v, w);
 			merge(u, v);
 			count++;
 		}
