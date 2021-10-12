@@ -1,24 +1,14 @@
-ll mult(ll a, ll b)
-{
-	ll res = (a * b) % mod;
-
-	if (res < 0) {
-		res += mod;
-	}
-
-	return res;
-}
-
-ll power(ll a, ll b)
+ll binpow(ll a, ll b, ll m)
 {
 	ll res = 1;
+	a %= m;
 
 	while (b) {
-		if (b % 2 == 1) {
-			res = mult(a, res);
+		if (b & 1) {
+			res = (res * a) % m;
 		}
 
-		a = mult(a, a);
+		a = (a * a) % m;
 		b /= 2;
 	}
 
