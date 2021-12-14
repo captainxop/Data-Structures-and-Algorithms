@@ -11,7 +11,9 @@ void dfs(int u, int p = -1)
 		depth[v] = depth[u] + 1;
 		up[v][0] = u;
 		for (int j = 1; j < LOG; j++) {
-			up[v][j] = up[up[v][j - 1]][j - 1];
+			if (up[v][j - 1] != -1) {
+				up[v][j] = up[up[v][j - 1]][j - 1];
+			}
 		}
 
 		dfs(v, u);
