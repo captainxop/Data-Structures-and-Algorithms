@@ -1,0 +1,134 @@
+//Problem: https://leetcode.com/problems/minimum-xor-sum-of-two-arrays/
+
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+using namespace std;
+
+#define pb push_back
+#define ppb pop_back
+#define mp make_pair
+#define lb lower_bound
+#define ub upper_bound
+#define ff first
+#define ss second
+
+#define rep(i, a, b) for(int i = a; i < b; i++)
+#define repR(i, a, b) for(int i = a; i >= b; --i)
+#define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+#define sz(x) (int)(x).size()
+#define mem0(a) memset(a,0,sizeof(a))
+#define mem1(a) memset(a,-1,sizeof(a))
+
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double lld;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+
+#define MOD1 1000000007
+#define MOD2 998244353
+#define INF  2000000000000000000
+#define ps(x,y) fixed << setprecision(y) << x
+#define fastio ios_base::sync_with_stdio(false),cin.tie(NULL),cout.tie(NULL)
+template <typename T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+//member functions :
+//1. order_of_key(k) : number of elements strictly lesser than k
+//2. find_by_order(k) : k-th element in the set
+
+/*---------------------------------------------------------Debugging----------------------------------------------------------*/
+#ifndef ONLINE_JUDGE
+#define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
+#else
+#define debug(x)
+#endif
+
+void _print(int t) {cerr << t;}
+void _print(ll t) {cerr << t;}
+void _print(char t) {cerr << t;}
+void _print(string t) {cerr << t;}
+void _print(double t) {cerr << t;}
+void _print(lld t) {cerr << t;}
+void _print(ull t) {cerr << t;}
+
+template <class T, class V> void _print(pair <T, V> p);
+template <class T> void _print(vector <T> v);
+template <class T> void _print(set <T> v);
+template <class T, class V> void _print(map <T, V> v);
+template <class T> void _print(multiset <T> v);
+template <class T, class V> void _print(pair <T, V> p) {cerr << "{"; _print(p.ff); cerr << ","; _print(p.ss); cerr << "}";}
+template <class T> void _print(vector <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
+/*----------------------------------------------------------------------------------------------------------------------------*/
+
+vector<vector<int>> dp;
+int all_set;
+// dp[i][mask] = minimum xor sum for elements which not have been picked yet
+// and the last element is picked for index i
+// i represents the index for which the element is picked
+// mask represents the elements that are already picked
+
+int helper(vector<int>& nums1, vector<int>& nums2, int n, int index, int mask)
+{
+	if (mask == all_set) { // all elements are picked
+		return 0;
+	}
+	if (index >= n) {
+		return 0;
+	}
+	if (dp[index][mask] != -1) {
+		return dp[index][mask];
+	}
+
+	int ans = INT_MAX;
+	for (int i = 0; i < n; i++) {
+		if ((mask & (1 << i)) > 0) { // element is already picked
+			continue;
+		}
+
+		int x = (nums1[index] ^ nums2[i]) + helper(nums1, nums2, n, index + 1, mask | (1 << i));
+		ans = min(ans, x);
+	}
+
+	return dp[index][mask] = ans;
+}
+
+int minimumXORSum(vector<int>& nums1, vector<int>& nums2)
+{
+	int n = nums1.size();
+	dp = vector<vector<int>> (n, vector<int> (1 << 15, -1));
+	all_set = (1 << n) - 1;
+	return helper(nums1, nums2, n, 0, 0);
+}
+
+void solve()
+{
+	int n;
+	cin >> n;
+
+	vector<int> nums1(n), nums2(n);
+	for (auto &x : nums1) cin >> x;
+	for (auto &x : nums2) cin >> x;
+
+	cout << minimumXORSum(nums1, nums2) << '\n';
+}
+
+int main()
+{
+	/*#ifndef ONLINE_JUDGE
+		freopen("input.txt", "r", stdin);
+		freopen("output.txt", "w", stdout);
+		freopen("Error.txt", "w", stderr);
+	#endif*/
+
+	fastio;
+	int t = 1;
+	cin >> t;
+	while (t--) solve();
+
+	return 0;
+}
