@@ -32,7 +32,7 @@ void dfs(int u)
 		}
 	}
 
-	toposort.pb(u);
+	toposort.push_back(u);
 }
 
 reverse(toposort.begin(), toposort.end());
